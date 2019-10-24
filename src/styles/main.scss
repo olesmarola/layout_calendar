@@ -1,3 +1,66 @@
-body {
-  margin: 0;
+@import "resets";
+@import "variables";
+
+.calendar {
+  $block-width: 100px;
+  $blocks-number: 7;
+  $margin: 6px;
+
+  max-width: $block-width * $blocks-number + $margin + 1;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  > div {
+    margin: 0 1px 1px 0;
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+    background-color: #eee;
+    border: 1px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 30px;
+    &:hover {
+      cursor: pointer;
+      animation-name: transform;
+      animation-duration: 0.5s;
+      animation-fill-mode: forwards;
+    }
+    &:last-child {
+      margin: 0;
+    }
+  }
+}
+
+@for $i from 1 through 31 {
+  .calendar > div:nth-child(#{$i})::after {
+    content: "#{$i}";
+  }
+}
+
+@each $day in $calendar_days {
+  .calendar-#{$day} > div:nth-child(#{$day}) ~ div {
+    visibility: hidden;
+  }
+}
+
+$additional_margin: 0;
+
+@each $day in $weekday {
+  .calendar-#{$day} div:first-child {
+    margin-left: (100px + 1) * $additional_margin;
+  }
+  $additional_margin: $additional_margin + 1;
+}
+
+@keyframes transform {
+  from {
+    background-color: #eee;
+  }
+  to {
+    background-color: pink;
+    transform: translateY(-20px);
+  }
 }
